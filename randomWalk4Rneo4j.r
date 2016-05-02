@@ -6,7 +6,6 @@ importGraphData = function(fileName, graph){
   names(dt) = c("FromNodeId", "ToNodeId")
   csvFile = paste(fileName, ".csv", sep = "")
   write.csv(dt, , csvFile, row.names = FALSE)
-  
   addConstraint(graph, "Node", "id")
   # use cypher to load nodes and links from CSV file
   query = sprintf("
@@ -110,8 +109,8 @@ multiRandomWalk = function(graph, numStart, steps){
   row.names(outPassVectors) = allIds
   for (i in 1:numStart) {
     temp = table(multiOutPath[[i]])
-    for (j in 1:length(t)){
-      x = names(t)[j]
+    for (j in 1:length(temp)){
+      x = names(temp)[j]
       outPassVectors[x, i] = temp[x][[1]]
     }
   }
@@ -196,8 +195,8 @@ multiAgentRandomWalk = function(graph, startVid, numAgents, ropeLength, steps){
   names(outPassChain) = allIds
   for (i in 1:numAgents) {
     temp = table(pathsDf[[i]])
-    for (j in 1:length(t)){
-      x = names(t)[j]
+    for (j in 1:length(temp)){
+      x = names(temp)[j]
       outPassVectors[x, i] = temp[x][[1]]
     }
   }
@@ -236,6 +235,7 @@ list2graph = function(graph, nodeList){
 
 #connect to graph
 graph = startGraph("http://localhost:7474/db/data/",
-                   username = "neo4j",
-                   password = "password") # you can replace it
+                   username,
+                   password)
 
+clear(graph, input = FALSE)
